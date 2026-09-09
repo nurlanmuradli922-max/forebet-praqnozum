@@ -1,8 +1,8 @@
-⚽ Futbol Proqnozlari - 09.09.2026 12:43
+⚽ Futbol Proqnozlari - 09.09.2026 12:45
 Avtomatik yenilenir (her saat)
 
 Bugunku oyunlar:
 
-1. Sayt cavab vermedi, 5 deq sonra yeniden yoxlanacaq
+Hələlik oyun tapılmadı, 1 saata yenilənəcək.
 
-Son yenilenme: 09.09.2026 12:43 Baki vaxti Menbeler: Forebet.com + PredictZ
+Son yenilenme: 09.09.2026 12:45 Baki vaxti | Menbe: PredictZ.com
