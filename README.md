@@ -1,8 +1,8 @@
-⚽ Futbol Proqnozlari - 09.09.2026 08:33
+⚽ Futbol Proqnozlari - 09.09.2026 12:43
 Avtomatik yenilenir (her saat)
 
 Bugunku oyunlar:
-1. Sayt cavab vermedi Kod: 403
 
-Son yenilenme: 09.09.2026 08:33 Baki vaxti
-Menbeler: Forebet.com + PredictZ
+1. Sayt cavab vermedi, 5 deq sonra yeniden yoxlanacaq
+
+Son yenilenme: 09.09.2026 12:43 Baki vaxti Menbeler: Forebet.com + PredictZ
