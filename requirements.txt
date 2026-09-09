@@ -1,5 +1,4 @@
-pytz
 requests
+pytz
 beautifulsoup4
-cloudscraper
 lxml
