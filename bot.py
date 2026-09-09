@@ -7,60 +7,63 @@ now = datetime.now(tz)
 tarix = now.strftime("%d.%m.%Y %H:%M")
 
 fg = []
-st = "Yoxlanir"
+st = "Yoxlanilir"
 
 headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "en-US,en;q=0.9,az;q=0.8",
+    "Referer": "https://www.google.com/",
+    "Connection": "keep-alive"
 }
 
 try:
-    # Predictz - GitHub-dan problemsiz açılır
     url = "https://www.predictz.com/predictions/"
     r = requests.get(url, headers=headers, timeout=30)
     
     if r.status_code == 200:
-        soup = BeautifulSoup(r.text, 'lxml')
-        # Predictz-in oyun qutuları
-        games = soup.select("div.ptable_row")[:20]
+        soup = BeautifulSoup(r.text, "lxml")
+        # Predictz -deki oyunlar
+        games = soup.select(".ptable .ptable_row")[:7]
+        
         for g in games:
             try:
-                teams = g.select_one("div.ptable_name").get_text(strip=True) if g.select_one("div.ptable_name") else ""
-                pred = g.select_one("div.ptable_prediction").get_text(strip=True) if g.select_one("div.ptable_prediction") else ""
-                if teams:
-                    fg.append(f"{teams} -> {pred}")
-            except: continue
-        st = f"Predictz OK - {len(fg)} oyun"
+                home = g.select_one(".ptable_home").get_text(strip=True)
+                away = g.select_one(".ptable_away").get_text(strip=True)
+                pred = g.select_one(".ptable_pred").get_text(strip=True)
+                if home and away:
+                    fg.append(f"{home} vs {away} → {pred}")
+            except:
+                continue
+        
+        st = f"Ugurla yenilendi - Kod {r.status_code}"
+        if not fg:
+            fg = ["Bu saat üçün proqnoz tapılmadı"]
+            st = "Sayt açıldı amma oyun tapılmadı"
     else:
-        st = f"Status {r.status_code}"
+        st = f"Sayt blokladı - Kod {r.status_code}"
+        fg = ["Proqnozlar hazırda əlçatan deyil, növbəti saat yoxlanacaq"]
+
 except Exception as e:
-    st = f"Xeta: {e}"
+    st = f"Xəta: {str(e)[:50]}"
+    fg = ["Proqnozlar hazırda əlçatan deyil, növbəti saat yoxlanacaq"]
 
-if not fg:
-    # Fallback demo - heç vaxt boş qalmasın deyə
-    fg = [
-        "Real Madrid vs Barcelona -> 1X",
-        "Man City vs Arsenal -> 1",
-        "Bayern vs Dortmund -> Over 2.5",
-        "Galatasaray vs Fenerbahce -> 1",
-        "Qarabag vs Neftci -> 1"
-    ]
-    st = st + " (demo gösterilir)"
+# README YAZ
+oyunlar_text = "\n".join([f"• {x}" for x in fg])
 
-oyun_metni = "\n".join([f"- {o}" for o in fg])
-
-readme = f"""# ⚽ Futbol Proqnozlari - {tarix}
+md = f"""⚽ Futbol Proqnozlari - {tarix}
 
 Avtomatik yenilenir (her saat)
 
-### Bugunku oyunlar:
-{oyun_metni}
+Bugunku oyunlar:
+{oyunlar_text}
 
 ---
 Son yenilenme: {tarix} Baki vaxti
 Status: {st}
 """
 
-with open("README.md","w",encoding="utf-8") as f:
-    f.write(readme)
+with open("README.md", "w", encoding="utf-8") as f:
+    f.write(md)
 
-print(st)
+print(md)
