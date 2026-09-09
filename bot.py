@@ -5,70 +5,31 @@ from bs4 import BeautifulSoup
 tz = pytz.timezone("Asia/Baku")
 now = datetime.now(tz)
 tarix = now.strftime("%d.%m.%Y %H:%M")
-
 fg = []
 
-# GitHub-i bloklamayan proxy ile cekirik
-target_url = "https://www.predictz.com/predictions/"
-proxy_url = f"https://api.allorigins.win/raw?url={target_url}"
-
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
-}
+url = "https://api.allorigins.win/raw?url=https://www.predictz.com/predictions/"
+headers = {"User-Agent": "Mozilla/5.0"}
 
 try:
-    r = requests.get(proxy_url, headers=headers, timeout=40)
-    
-    if r.status_code == 200 and "ptable" in r.text:
+    r = requests.get(url, headers=headers, timeout=30)
+    if r.status_code == 200:
         soup = BeautifulSoup(r.text, "lxml")
-        games = soup.select(".ptable .ptable_row")[:8]
-        
+        games = soup.select(".ptable_row")[:8]
         for g in games:
-            try:
-                home = g.select_one(".ptable_home").get_text(strip=True)
-                away = g.select_one(".ptable_away").get_text(strip=True)
-                pred = g.select_one(".ptable_pred").get_text(strip=True)
-                if home and away:
-                    fg.append(f"{home} vs {away} → {pred}")
-            except:
-                continue
-    
-    # Eger yene bosdursa, fallback - Forebet (bu sayt az bloklayir)
-    if not fg:
-        r2 = requests.get("https://api.allorigins.win/raw?url=https://www.forebet.com/en/football-tips-and-predictions-for-today", headers=headers, timeout=40)
-        if r2.status_code == 200:
-            soup2 = BeautifulSoup(r2.text, "lxml")
-            rows = soup2.select(".tr_0, .tr_1")[:8]
-            for row in rows:
-                try:
-                    txt = row.get_text(" ", strip=True)
-                    if len(txt) > 10:
-                        fg.append(txt[:60])
-                except:
-                    pass
-
+            h = g.select_one(".ptable_home")
+            a = g.select_one(".ptable_away")
+            p = g.select_one(".ptable_pred")
+            if h and a and p:
+                fg.append(f"{h.text.strip()} vs {a.text.strip()} -> {p.text.strip()}")
 except Exception as e:
-    print(f"Xeta: {e}")
+    print(e)
 
-# EGER YENE ALINMASA, README-NI POZMA! KOHNESINI SAXLA
 if not fg:
-    print("Proqnoz alinmadi, README yenilenmir - kohnesi qalir")
-    exit(0) # <- en vacib yer, pis yazı yazmasın
+    print("alinmadi, README pozulmasin")
+    exit(0)
 
-oyunlar_text = "\n".join([f"• {x}" for x in fg])
-
-md = f"""⚽ Futbol Proqnozlari - {tarix}
-
-Avtomatik yenilenir (her saat)
-
-Bugunku oyunlar:
-{oyunlar_text}
-
----
-Son yenilenme: {tarix} Baki vaxti | Predictz & Forebet
-"""
+txt = "\n".join([f"• {x}" for x in fg])
+md = f"⚽ Futbol Proqnozlari - {tarix}\n\nAvtomatik yenilenir (her saat)\n\nBugunku oyunlar:\n{txt}\n\n---\nSon yenilenme: {tarix} Baki vaxti\n"
 
 with open("README.md", "w", encoding="utf-8") as f:
     f.write(md)
-
-print(f"Ugurla {len(fg)} oyun yazildi")
