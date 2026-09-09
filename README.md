@@ -1,3 +1,10 @@
-# Forebet 09.09.2026 00:34
+# ⚽ Futbol Proqnozları - 09.09.2026 00:36
 
-Proqnozlar hazirlanir, 1 saata yenilenecek
+**Avtomatik yenilənir (hər saat)**
+
+### Bugünkü oyunlar:
+
+Hal-hazırda oyunlar yüklənmədi, növbəti saatda yenidən cəhd edəcək - Forebet müvəqqəti blokdadır
+
+---
+Son yenilənmə: 09.09.2026 00:36 Baku vaxtı
