@@ -1,49 +1,59 @@
-import requests
+import requests, json, os, random, time
 from bs4 import BeautifulSoup
 from datetime import datetime
+import pytz
 
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/122.0.0.0 Safari/537.36",
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/128.0.0.0 Safari/537.36",
+    "Referer": "https://www.google.com/"
 }
 
-def get_forebet():
+def get_games():
+    url = "https://www.forebet.com/en/football-tips-and-predictions-for-today"
     try:
-        r = requests.get("https://www.forebet.com/en/football-tips-and-predictions-for-today", headers=headers, timeout=20)
-        soup = BeautifulSoup(r.text, 'html.parser')
-        out = []
-        for row in soup.select(".tr_0, .tr_1, .tr_2, .tr_3")[:20]:
-            t = row.select_one(".date_bah")
-            nm = row.select_one(".tnms a")
-            pr = row.select_one(".fprc span")
-            if nm and pr:
-                out.append(f"- {t.text.strip() if t else ''} {nm.text.strip()} -> Proqnoz: {pr.text.strip()}")
-        return out
-    except:
-        return []
+        time.sleep(random.randint(2,4))
+        r = requests.get(url, headers=HEADERS, timeout=25)
+        # Forebet bloklayanda Cloudflare səhifəsi qaytarır
+        if r.status_code != 200 or "Just a moment" in r.text or len(r.text) < 5000:
+            print(f"BLOK: {r.status_code}")
+            return None
+        
+        soup = BeautifulSoup(r.text, "html.parser")
+        games = []
+        for el in soup.select(".rcnt, .tr_0, .tr_1")[:20]:
+            t = el.get_text(" ", strip=True)
+            if len(t) > 10:
+                games.append(t)
+        return games if games else None
+    except Exception as e:
+        print(f"Xeta: {e}")
+        return None
 
-def get_predictz():
-    try:
-        r = requests.get("https://www.predictz.com/predictions/", headers=headers, timeout=20)
-        soup = BeautifulSoup(r.text, 'html.parser')
-        out = []
-        for row in soup.select(".ptable .pttr")[:20]:
-            teams = row.select_one(".pttd.pt_name")
-            pred = row.select_one(".pttd.pt_pred")
-            if teams:
-                out.append(f"- {teams.text.strip()} -> {pred.text.strip() if pred else ''}")
-        return out
-    except:
-        return []
+new_games = get_games()
 
-games = get_forebet()
-if not games:
-    games = get_predictz()
-if not games:
-    games = ["Hal-hazırda oyunlar yüklənmədi, növbəti saatda yenidən cəhd edəcək - Forebet müvəqqəti blokdadır"]
+# === ƏSAS HİSSƏ: Boş olanda README-ni silmə ===
+if new_games:
+    final_games = new_games
+    # yadda saxla
+    with open("data.json", "w", encoding="utf-8") as f:
+        json.dump(final_games, f, ensure_ascii=False, indent=2)
+    status = "✅ Canlı proqnozlar"
+else:
+    # Blokdasa köhnədən götür
+    if os.path.exists("data.json"):
+        with open("data.json", "r", encoding="utf-8") as f:
+            final_games = json.load(f)
+        status = "⚠️ Forebet müvəqqəti blokda idi - köhnə oyunlar göstərilir"
+    else:
+        final_games = []
+        status = "Oyunlar yüklənmədi, növbəti saatda cəhd ediləcək"
 
-now = datetime.now().strftime("%d.%m.%Y %H:%M")
-content = f"# ⚽ Futbol Proqnozları - {now}\n\n**Avtomatik yenilənir (hər saat)**\n\n### Bugünkü oyunlar:\n\n" + "\n".join(games) + f"\n\n---\nSon yenilənmə: {now} Baku vaxtı"
+# README yaz
+now = datetime.now(pytz.timezone("Asia/Baku")).strftime("%d.%m.%Y %H:%M")
+text = f"⚽ Futbol Proqnozları - {now}\n\nAvtomatik yenilənir (hər saat)\n\n## Bugünkü oyunlar:\n{status}\n\n"
+for g in final_games:
+    text += f"- {g}\n"
+text += f"\n---\nSon yenilənmə: {now} Baku vaxtı\n"
 
-with open("README.md","w",encoding="utf-8") as f:
-    f.write(content)
-print(content)
+with open("README.md", "w", encoding="utf-8") as f:
+    f.write(text)
