@@ -1,44 +1,44 @@
 import json
+import os
 import pytz
 from datetime import datetime
-import os
 
-# Fayl adları
-GAMES_FILE = "games.json"
+fg = []
+st = "Blokdadir"
 
-final_games = []
-status = ""
-
-# Köhnə oyunları yoxla
 try:
-    if os.path.exists(GAMES_FILE):
-        with open(GAMES_FILE, "r", encoding="utf-8") as f:
-            old_data = json.load(f)
-            if old_data:
-                final_games = old_data
-                status = "⚠️ Forebet müvəqqəti blokda idi - köhnə oyunlar göstərilir"
-            else:
-                status = "Hal-hazırda oyunlar yüklənmədi, növbəti saatda yenidən cəhd edəcək - Forebet müvəqqəti blokdadır"
-    else:
-        final_games = []
-        status = "Hal-hazırda oyunlar yüklənmədi, növbəti saatda yenidən cəhd edəcək - Forebet müvəqqəti blokdadır"
-except Exception as e:
-    final_games = []
-    status = f"Hal-hazırda oyunlar yüklənmədi, növbəti saatda yenidən cəhd edəcək - Forebet müvəqqəti blokdadır"
+    if os.path.exists("games.json"):
+        with open(
+            "games.json",
+            "r",
+            encoding="utf-8"
+        ) as f:
+            fg = json.load(f)
+except:
+    pass
 
-# Əgər heç status yoxdursa
-if not status:
-    status = "Hal-hazırda oyunlar yüklənmədi, növbəti saatda yenidən cəhd edəcək - Forebet müvəqqəti blokdadır"
+tz = pytz.timezone(
+    "Asia/Baku"
+)
 
-# README yaz
-now = datetime.now(pytz.timezone("Asia/Baku")).strftime("%d.%m.%Y %H:%M")
-text = f"# ⚽ Futbol Proqnozları - {now}\n\n**Avtomatik yenilənir (hər saat)**\n\n### Bugünkü oyunlar:\n\n{status}\n\n"
-for g in final_games:
+now = datetime.now(tz)
+now = now.strftime(
+    "%d.%m %H:%M"
+)
+
+text = f"# Futbol - {now}\n\n"
+text += f"{st}\n\n"
+
+for g in fg:
     text += f"- {g}\n"
 
-text += f"\n---\nSon yenilənmə: {now} Baku vaxtı\n"
+text += f"\n---\nSon: {now}\n"
 
-with open("README.md", "w", encoding="utf-8") as f:
+with open(
+    "README.md",
+    "w",
+    encoding="utf-8"
+) as f:
     f.write(text)
 
-print("README.md yeniləndi")
+print("OK")
