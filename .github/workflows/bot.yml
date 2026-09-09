@@ -1,9 +1,9 @@
 name: bot
-on: 
+on:
   push:
   workflow_dispatch:
   schedule:
-    - cron: '0 */6 * * *'
+    - cron: '0 * * * *'
 jobs:
   run:
     runs-on: ubuntu-latest
