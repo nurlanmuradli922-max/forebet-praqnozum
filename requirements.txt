@@ -1,3 +1,5 @@
-
+pytz
 requests
 beautifulsoup4
+cloudscraper
+lxml
