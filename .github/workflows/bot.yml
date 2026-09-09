@@ -1,8 +1,24 @@
 name: bot
-on: [push, workflow_dispatch]
+on: 
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */6 * * *'
 jobs:
   run:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
       - run: python bot.py
+      - run: |
+          git config user.name "bot"
+          git config user.email "bot@bot.com"
+          git add README.md
+          git commit -m "proqnoz yenilendi" || echo "dəyişiklik yoxdur"
+          git push
