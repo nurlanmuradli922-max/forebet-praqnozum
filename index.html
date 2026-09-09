@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Futbol Analiz</title>
+<style>
+body{background:#0f1115;color:#fff;font-family:sans-serif;padding:20px}
+h1{color:#00ff88}.card{background:#1c1f26;padding:15px;margin:10px 0;border-radius:10px;border-left:4px solid #00ff88}
+.time{color:#888}
+</style></head><body>
+<h1>⚽ Futbol Analizləri</h1>
+<div id="t" class="time">Yuklenir...</div>
+<div id="l"></div>
+<script>
+fetch('data.json?v='+Date.now()).then(r=>r.json()).then(d=>{
+document.getElementById('t').innerText='Son yenilenme: '+d.updated;
+let h='';d.games.forEach(g=>{
+h+=`<div class="card"><b>${g.match}</b><br>Proqnoz: ${g.pred}<br><small>${g.tip}</small></div>`;
+});
+document.getElementById('l').innerHTML=h;
+});
+</script></body></html>
