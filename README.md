@@ -1,10 +1,14 @@
-# ⚽ Futbol Proqnozlari - 09.09.2026 05:36
+# ⚽ Futbol Proqnozlari - 09.09.2026 05:40
 
 Avtomatik yenilenir (her saat)
 
 ### Bugunku oyunlar:
-Hal-hazirda oyun tapilmadi - Yoxlanir
+- Real Madrid vs Barcelona -> 1X
+- Man City vs Arsenal -> 1
+- Bayern vs Dortmund -> Over 2.5
+- Galatasaray vs Fenerbahce -> 1
+- Qarabag vs Neftci -> 1
 
 ---
-Son yenilenme: 09.09.2026 05:36 Baki vaxti
-Status: Yoxlanir - 0 oyun
+Son yenilenme: 09.09.2026 05:40 Baki vaxti
+Status: Status 403 (demo gösterilir)
