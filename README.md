@@ -1,4 +1,4 @@
-⚽ Futbol Proqnozlari - 17.09.2026 19:03
+⚽ Futbol Proqnozlari - 17.09.2026 20:03
 Avtomatik yenilenir (her saat)
 
 Bugunku oyunlar:
@@ -7,4 +7,4 @@ Bugunku oyunlar:
 - **Man City vs Arsenal** -> Proqnoz: X2
 - **Qarabağ vs Neftçi** -> Proqnoz: 1
 
-Son yenilenme: 17.09.2026 19:03 Baki vaxti | Menbe: Keşdə saxlanılan
+Son yenilenme: 17.09.2026 20:03 Baki vaxti | Menbe: Keşdə saxlanılan
