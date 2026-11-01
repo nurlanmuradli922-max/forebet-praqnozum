@@ -1,4 +1,4 @@
-⚽ Futbol Proqnozlari - 01.11.2026 05:36
+⚽ Futbol Proqnozlari - 01.11.2026 12:20
 Avtomatik yenilenir (her saat)
 
 Bugunku oyunlar:
@@ -7,4 +7,4 @@ Bugunku oyunlar:
 - **Man City vs Arsenal** -> Proqnoz: X2
 - **Qarabağ vs Neftçi** -> Proqnoz: 1
 
-Son yenilenme: 01.11.2026 05:36 Baki vaxti | Menbe: Keşdə saxlanılan
+Son yenilenme: 01.11.2026 12:20 Baki vaxti | Menbe: Keşdə saxlanılan
